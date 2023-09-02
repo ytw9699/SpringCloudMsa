@@ -1,1 +1,2 @@
 *.properties -crlf -diff
+*.properties text eol=lf
