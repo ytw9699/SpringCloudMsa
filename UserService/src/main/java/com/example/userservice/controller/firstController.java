@@ -22,4 +22,9 @@ public class firstController {
         log.info(header);
         return "message="+header;
     }
+
+    @GetMapping("/check")
+    public String check1(){
+        return "check1";
+    }
 }
