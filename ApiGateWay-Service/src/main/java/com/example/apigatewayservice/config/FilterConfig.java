@@ -1,3 +1,4 @@
+/*
 package com.example.apigatewayservice.config;
 
 import org.springframework.cloud.gateway.route.RouteLocator;
@@ -22,3 +23,4 @@ public class FilterConfig {
                 .build();
     }
 }
+*/
