@@ -1,15 +1,21 @@
 package com.example.userservice.controller;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import javax.servlet.http.HttpServletRequest;
 
 @Slf4j
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/first-service")
 public class firstController {
+
+    private final Environment env;
 
     @GetMapping("/welcome")
     public String welcome(){
@@ -24,7 +30,10 @@ public class firstController {
     }
 
     @GetMapping("/check")
-    public String check1(){
-        return "check1";
+    public String check1(HttpServletRequest request){
+
+        log.info("server port="+request.getServerPort());
+
+        return env.getProperty("local.server.port");
     }
 }
