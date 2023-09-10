@@ -1,4 +1,5 @@
 package com.example.userservice2.jpa;
+
 import lombok.Data;
 import javax.persistence.*;
 
