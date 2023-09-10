@@ -1,6 +1,7 @@
 package com.example.userservice2.controller;
 
 import com.example.userservice2.dto.UserDto;
+import com.example.userservice2.jpa.UserEntity;
 import com.example.userservice2.service.UserService;
 import com.example.userservice2.vo.Greeting;
 import com.example.userservice2.vo.RequestUser;
@@ -12,6 +13,8 @@ import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -39,6 +42,7 @@ public class UserController {
         return greeting.getMessage();
     }
 
+    /** 회원 가입 */
     @PostMapping("/users")
     public ResponseEntity createUser(@RequestBody RequestUser user) {
         ModelMapper mapper = new ModelMapper();
@@ -51,6 +55,33 @@ public class UserController {
         ResponseUser responseUser = mapper.map(result, ResponseUser.class);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(responseUser);
+    }
+
+    /** 유저 리스트 조회 */
+    @GetMapping("/users")
+    public ResponseEntity<List<ResponseUser>> getUsers() {
+        final Iterable<UserEntity> userList = userService.getUserByAll();
+
+        List<ResponseUser> results = new ArrayList<>();
+
+        ModelMapper mapper = new ModelMapper();
+
+        userList.forEach(user -> {
+            results.add(mapper.map(user, ResponseUser.class));
+        });
+
+        return ResponseEntity.status(HttpStatus.OK).body(results);
+    }
+
+    /** 유저 조회 */
+    @GetMapping("/users/{userId}")
+    public ResponseEntity<ResponseUser> getUser(@PathVariable String userId) {
+
+        final UserDto userDto = userService.getUserByUserId(userId);
+
+        ResponseUser result = new ModelMapper().map(userDto, ResponseUser.class);
+
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
 }
