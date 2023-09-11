@@ -43,7 +43,7 @@ public class UserController {
     }
 
     /** 회원 가입 */
-    @PostMapping("/users")
+    @PostMapping("/join")
     public ResponseEntity createUser(@RequestBody RequestUser user) {
         ModelMapper mapper = new ModelMapper();
                     mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
@@ -58,7 +58,7 @@ public class UserController {
     }
 
     /** 유저 리스트 조회 */
-    @GetMapping("/users")
+    @GetMapping("/userList")
     public ResponseEntity<List<ResponseUser>> getUsers() {
         final Iterable<UserEntity> userList = userService.getUserByAll();
 
