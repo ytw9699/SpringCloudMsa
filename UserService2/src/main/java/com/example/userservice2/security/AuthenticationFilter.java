@@ -1,5 +1,6 @@
 package com.example.userservice2.security;
 
+import com.example.userservice2.dto.UserDto;
 import com.example.userservice2.service.UserService;
 import com.example.userservice2.vo.RequestLogin;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -55,17 +56,22 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
                                             Authentication authResult) throws IOException, ServletException
     {
-     /*   String username = ((User) authResult.getPrincipal()).getUsername();
-        UserDto userDetails = userService.getUserDetailsByEmail(username);
+        String username = ((User) authResult.getPrincipal()).getUsername();
 
-        String token = Jwts.builder()
-            .setSubject(userDetails.getUserId())
+        log.debug(username);
+
+        UserDto dto = userService.getUserDetailsByEmail(username);
+
+     /*   String token = Jwts.builder()
+            .setSubject(dto.getUserId())
             .setExpiration(new Date(System.currentTimeMillis() +
                     Long.parseLong(env.getProperty("token.expiration_time"))))
             .signWith(SignatureAlgorithm.HS512, env.getProperty("token.secret"))
             .compact();
 
-        response.addHeader("token", token);
-        response.addHeader("userId", userDetails.getUserId());*/
+        response.addHeader("token", token);*/
+
+        response.addHeader("userId", dto.getUserId());
+        log.debug(dto.getUserId());
     }
 }
