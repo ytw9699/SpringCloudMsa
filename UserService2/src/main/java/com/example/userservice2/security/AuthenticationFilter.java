@@ -63,13 +63,13 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         log.debug(username);
 
         UserDto dto = userService.getUserDetailsByEmail(username);
-        String test = env.getProperty("token.expiration_time");
+        String time = env.getProperty("token.expiration_time");
 
         String token = Jwts.builder()
                             .setSubject(dto.getUserId())
                             .setExpiration(
                                     new Date(System.currentTimeMillis() +
-                                    Long.parseLong(test)))//현재시간에서 + 24시간
+                                    Long.parseLong(time)))//현재시간에서 + 24시간
                             .signWith(SignatureAlgorithm.HS512, env.getProperty("token.secret"))//암호화
                        .compact();
 

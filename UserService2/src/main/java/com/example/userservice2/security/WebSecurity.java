@@ -22,7 +22,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     // 인증 관련 로직 처리
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        // 로그인 시 비밀번호를 암호화
+        // 비밀번호를 암호화
         auth.userDetailsService(userService).passwordEncoder(bCryptPasswordEncoder);
     }
 
@@ -46,11 +46,10 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     }
 
     private AuthenticationFilter getAuthenticationFilter() throws Exception {
+
         AuthenticationFilter authenticationFilter =
                 new AuthenticationFilter(authenticationManager(), userService, env);
 
         return authenticationFilter;
     }
-
-
 }
