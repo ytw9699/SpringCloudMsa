@@ -82,14 +82,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        final UserEntity userEntity = userRepository.findByEmail(username);
+        final UserEntity userEntity = userRepository.findByEmail(username);//username = email
 
         if (userEntity == null)
             throw new UsernameNotFoundException(username);
 
         return new User(
                 userEntity.getEmail(),
-                userEntity.getEncryptedPwd(),
+                userEntity.getEncryptedPwd(),//암호화된 비밀번호를 비교하자
                 true,
                 true,
                 true,

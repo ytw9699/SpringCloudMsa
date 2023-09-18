@@ -19,11 +19,13 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     private final UserService userService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    // 인증 관련 로직 처리
+    // 인증 관련 로직 처리, 인증이 되어야 권한부여 가능
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        // 비밀번호를 암호화
         auth.userDetailsService(userService).passwordEncoder(bCryptPasswordEncoder);
+        //userService등록, 사용자가 보낸 유저네임과 패스워드를 가지고 로그인 처리
+        //1. 먼저 사용자 데이터를 검색한다 > select pwd from users where email = ?
+        //2. 로그인시 입력한 비밀번호를 암호화(bCryptPasswordEncoder) 해서 디비에서 이미 암호화된 값과 비교한다.
     }
 
     // 권한 관련 로직 처리
@@ -31,24 +33,25 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 
         http.csrf().disable();
+        //http.authorizeRequests().antMatchers("/**").permitAll();//모든 것 통과
         //http.authorizeRequests().antMatchers("/users").permitAll();
         http.authorizeRequests().antMatchers("/h2-console/**").permitAll();
+        http.headers().frameOptions().disable();
         //http.authorizeRequests().antMatchers("/userList").permitAll();
         //http.authorizeRequests().antMatchers("/join").permitAll();
 
         http.authorizeRequests()
                 .antMatchers("/**")
-                .access("hasIpAddress('127.0.0.1')")
+                .hasIpAddress("127.0.0.1")//이런 아이피만 통과
                 .and()
-                .addFilter(getAuthenticationFilter());
-
-        http.headers().frameOptions().disable();
+                .addFilter(getAuthenticationFilter());//모든 요청에 대해 인증 필터 작업 처리
     }
 
     private AuthenticationFilter getAuthenticationFilter() throws Exception {
 
         AuthenticationFilter authenticationFilter =
                 new AuthenticationFilter(authenticationManager(), userService, env);
+                //스프링 시큐리티에서 가져온 매니저 가지고 인증 처리
 
         return authenticationFilter;
     }

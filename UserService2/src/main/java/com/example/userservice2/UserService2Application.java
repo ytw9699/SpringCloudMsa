@@ -18,5 +18,6 @@ public class UserService2Application {
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+    //사용자가 입력한 비밀번호 암호화 변환 작업
 
 }

@@ -43,7 +43,7 @@ public class UserController {
     }
 
     /** 회원 가입 */
-    @PostMapping("/join")
+    @PostMapping("/users")
     public ResponseEntity createUser(@RequestBody RequestUser user) {
         ModelMapper mapper = new ModelMapper();
                     mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);

@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 /**
- * /login URL 요청 시 호출되는 Filter
+ * /login URL 요청 시 호출되는 custom Filter
  */
 @Slf4j
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
@@ -40,13 +40,14 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
-            throws AuthenticationException {
+            throws AuthenticationException {//로그인 요청 정보
 
         try {
             RequestLogin creds = new ObjectMapper().readValue(request.getInputStream(), RequestLogin.class);
 
             return getAuthenticationManager().authenticate(
                     new UsernamePasswordAuthenticationToken(creds.getEmail(), creds.getPassword(), new ArrayList<>())
+                    //아이디, 패스워드, 권한들
             );
 
         } catch (IOException e) {
