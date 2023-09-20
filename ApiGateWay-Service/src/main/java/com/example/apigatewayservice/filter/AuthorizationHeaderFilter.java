@@ -16,6 +16,7 @@ import reactor.core.publisher.Mono;
 @Component
 @Slf4j
 public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<AuthorizationHeaderFilter.Config> {
+            //권한? 관련
 
     Environment env;
 
@@ -42,7 +43,7 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<Auth
             String authorizationHeader = request.getHeaders().get(HttpHeaders.AUTHORIZATION).get(0);
             String jwt = authorizationHeader.replace("Bearer", "");
 
-            if (!isJwtValid(jwt)) {
+            if (!isJwtValid(jwt)) {//정상 토근인지 디코드 확인
                 return onError(exchange, "JWT token is not valid", HttpStatus.UNAUTHORIZED);
             }
 
@@ -55,12 +56,12 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<Auth
         boolean returnBool = true;
         String subject = null;
 
-        try {
+        try {// 토큰 검증
              subject = Jwts.parser()
                             .setSigningKey(env.getProperty("token.secret"))//복호화
                             .parseClaimsJws(jwt)//복호화 대상
                        .getBody()
-                       .getSubject();//아이디값 가져와본다
+                       .getSubject();//아이디값 가져와본다. 그리고 기존 유저 아이디와 비교
              
         } catch (Exception e) {//파싱하다 에러시
             returnBool = false;
