@@ -25,7 +25,7 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<Auth
         this.env = env;
     }
 
-    // login -> token -> users (with token) -> header(include token)
+    // login후 -> token받고 -> api요청 (with token) -> header(include token)
     @Override
     public GatewayFilter apply(Config config) {
 
@@ -40,8 +40,8 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<Auth
                  return onError(exchange, "No authorization header", HttpStatus.UNAUTHORIZED);
             }
 
-            String authorizationHeader = request.getHeaders().get(HttpHeaders.AUTHORIZATION).get(0);
-            String jwt = authorizationHeader.replace("Bearer", "");
+            String token = request.getHeaders().get(HttpHeaders.AUTHORIZATION).get(0);
+            String jwt = token.replace("Bearer", "");
 
             if (!isJwtValid(jwt)) {//정상 토근인지 디코드 확인
                 return onError(exchange, "JWT token is not valid", HttpStatus.UNAUTHORIZED);
@@ -61,26 +61,27 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<Auth
                             .setSigningKey(env.getProperty("token.secret"))//복호화
                             .parseClaimsJws(jwt)//복호화 대상
                        .getBody()
-                       .getSubject();//아이디값 가져와본다. 그리고 기존 유저 아이디와 비교
+                       .getSubject();//아이디값 가져와본다
              
         } catch (Exception e) {//파싱하다 에러시
             returnBool = false;
         }
 
-        if (subject == null || subject.isEmpty())//null 이거나 비어있다면
+        if (subject == null || subject.isEmpty()) {//null 이거나 비어있다면, + 추가로 기존 유저 아이디와 비교해보자
             returnBool = false;
+        }
 
         return returnBool;
     }
 
     // Mono, Flux -> Spring WebFlux
-    // 단일 값 return -> Mono , 다중 값 return -> Flux
+    // 단일 값 return -> Mono , 다중 값 return -> Flux, 서블릿 개념이 아니다.
     private Mono<Void> onError(ServerWebExchange exchange, String err, HttpStatus httpStatus) {
         ServerHttpResponse response = exchange.getResponse();
                            response.setStatusCode(httpStatus);
         log.error(err);
 
-        return response.setComplete();//Mono타입 반환
+        return response.setComplete();//Mono타입 반환, 비동기방식이다
     }
 
     public static class Config {}

@@ -37,14 +37,16 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
         //http.authorizeRequests().antMatchers("/users").permitAll();
         http.authorizeRequests().antMatchers("/h2-console/**").permitAll();
         http.headers().frameOptions().disable();
+        //.antMatchers("/error/**").permitAll()
         //http.authorizeRequests().antMatchers("/userList").permitAll();
         //http.authorizeRequests().antMatchers("/join").permitAll();
 
         http.authorizeRequests()
-                .antMatchers("/**")
-                .hasIpAddress("127.0.0.1")//이런 아이피만 통과
+                .antMatchers("/**")// 모든 요청
+                .hasIpAddress("127.0.0.1")//이런 아이피만 통과 .hasIpaddress(IP) -> .access("hasIpAddress('" + IP + "')")
                 .and()
-                .addFilter(getAuthenticationFilter());//모든 요청에 대해 인증 필터 작업 처리
+                .addFilter(getAuthenticationFilter());//인증 필터 추가, 인증시 필터 걸림
+        //https://www.inflearn.com/questions/423204/%EB%B9%84%EA%B5%90%EC%A0%81-%EC%B5%9C%EC%8B%A0-%EB%B2%84%EC%A0%84%EC%97%90%EC%84%9C-%EC%97%90%EB%9F%AC%EA%B0%80-%EB%B0%9C%EC%83%9D%ED%95%A9%EB%8B%88%EB%8B%A4
     }
 
     private AuthenticationFilter getAuthenticationFilter() throws Exception {
