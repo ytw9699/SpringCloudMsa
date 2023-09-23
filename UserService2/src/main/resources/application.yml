@@ -32,6 +32,13 @@ logging:
   level:
     com.example.userservice2: DEBUG
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh, health, beans
+
+
 #expiration_time: 60*60*24*1000 = 하루
 #token:
   #expiration_time: 86400000
