@@ -58,7 +58,7 @@ public class UserController {
     }
 
     /** 유저 리스트 조회 */
-    @GetMapping("/users")
+    @GetMapping("/userList")
     public ResponseEntity<List<ResponseUser>> getUsers() {
         final Iterable<UserEntity> userList = userService.getUserByAll();
 

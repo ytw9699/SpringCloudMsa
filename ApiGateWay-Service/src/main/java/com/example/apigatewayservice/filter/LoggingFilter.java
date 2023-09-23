@@ -22,8 +22,6 @@ public class LoggingFilter extends AbstractGatewayFilterFactory<LoggingFilter.Co
     @Override
     public GatewayFilter apply(Config config) {
 
-        log.info(config.toString());
-
         GatewayFilter filter = new OrderedGatewayFilter((exchange, chain) -> {
 
             ServerHttpRequest request = exchange.getRequest();
