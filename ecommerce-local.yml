@@ -1,0 +1,6 @@
+token:
+  expiration_time: 86400002
+  secret: dfmlejkfjdjdddf1241524ghdas
+
+gateway:
+  ip: 127.0.0.1
