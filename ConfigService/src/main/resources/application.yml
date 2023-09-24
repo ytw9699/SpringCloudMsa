@@ -8,4 +8,7 @@ spring:
     config:
       server:
         git:
-          uri: file:///F:\java\GitApp\SpringCloudMsa1\ConfigRepository
+          #uri: file:///F:\java\GitApp\SpringCloudMsa1\ConfigRepository
+          uri: https://github.com/ytw9699/ConfigRepository
+#         username:
+#         password:
