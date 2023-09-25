@@ -4,14 +4,14 @@ server:
 spring:
   application:
     name: config-service
-  profiles:
-    active: native
+  #profiles:
+  #  active: native
   cloud:
     config:
       server:
-        native:
+        #native:
           #search-locations: file://${user.home}/Desktop/work/native-file-repo
-          search-locations: F:\java\GitApp\SpringCloudMsa1\ConfigRepository
+          #search-locations: F:\java\GitApp\SpringCloudMsa1\ConfigRepository
           #native 로 로컬에 위치를 설정시 아래 git uri 는 무시된다
         git:
           #uri: file:///F:\java\GitApp\SpringCloudMsa1\ConfigRepository

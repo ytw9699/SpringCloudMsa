@@ -1,0 +1,9 @@
+#encrypt:
+  #key: abdfdfdfdfdfdfd 대칭키 암호화 설정 방식
+
+#비대칭키 암호화 설정 방식
+encrypt:
+  key-store:
+    location: file://${user.home}/Desktop/mydev/SpringCloud/keystore/apiEncryptionkey.jks
+    password: test1234
+    alias: apiEncryptionkey
