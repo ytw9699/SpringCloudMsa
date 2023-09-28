@@ -1,9 +1,9 @@
 server:
-  port: 8004
+  port: 8005
 
 spring:
   application:
-    name: catalog-service
+    name: order-service
   h2:
     console:
       enabled: true
@@ -12,9 +12,7 @@ spring:
       path: /h2-console
   jpa:
     hibernate:
-      ddl-auto: create-drop # 기존거 삭제하고 새로만든다
-    show-sql: true
-    generate-ddl: true #sql 초기 세팅
+      ddl-auto: update
   datasource:
     driver-class-name: org.h2.Driver
     url: jdbc:h2:mem:testdb
@@ -32,4 +30,4 @@ eureka:
 
 logging:
   level:
-    com.example.catalogservice: DEBUG
+    com.example.orderservice: DEBUG
