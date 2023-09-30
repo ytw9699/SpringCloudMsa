@@ -66,6 +66,7 @@ public class UserServiceImpl implements UserService {
 
        // List<ResponseOrder> orders = new ArrayList<>();
 
+        /* Using as rest template */
       /*  String orderUrl = String.format(env.getProperty("order_service.url"), userId);
 
         ResponseEntity<List<ResponseOrder>> orderListResponse = restTemplate.exchange(orderUrl, HttpMethod.GET,
@@ -73,13 +74,19 @@ public class UserServiceImpl implements UserService {
 
         List<ResponseOrder> ordersList = orderListResponse.getBody();
 */
-        List<ResponseOrder> ordersList = null;
+
+        /* Using as feign client */
+        /* Feign Exception Handling */
+      /*  List<ResponseOrder> ordersList = null;
 
         try {// 404 예외가 발생하면 주문리스트만 빼고 응답하자
             ordersList = orderServiceClient.getOrders(userId);
         }catch (FeignException ex){
             log.error(ex.getMessage());
-        }
+        }*/
+
+        /* ErrorDecoder */
+        List<ResponseOrder> ordersList = orderServiceClient.getOrders(userId);
 
         userDto.setOrders(ordersList);
 
