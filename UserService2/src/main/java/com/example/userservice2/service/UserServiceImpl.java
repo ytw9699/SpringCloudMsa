@@ -5,6 +5,7 @@ import com.example.userservice2.dto.UserDto;
 import com.example.userservice2.jpa.UserEntity;
 import com.example.userservice2.jpa.UserRepository;
 import com.example.userservice2.vo.ResponseOrder;
+import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -72,7 +73,13 @@ public class UserServiceImpl implements UserService {
 
         List<ResponseOrder> ordersList = orderListResponse.getBody();
 */
-        List<ResponseOrder> ordersList = orderServiceClient.getOrders(userId);
+        List<ResponseOrder> ordersList = null;
+
+        try {// 404 예외가 발생하면 주문리스트만 빼고 응답하자
+            ordersList = orderServiceClient.getOrders(userId);
+        }catch (FeignException ex){
+            log.error(ex.getMessage());
+        }
 
         userDto.setOrders(ordersList);
 
