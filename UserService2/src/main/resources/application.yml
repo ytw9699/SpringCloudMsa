@@ -28,9 +28,12 @@ eureka:
 greeting:
   message: Welcome
 
+#logging:
+#  level:
+#    com.example.userservice2: DEBUG
 logging:
   level:
-    com.example.userservice2: DEBUG
+    com.example.userservice2.client: DEBUG
 
 management:
   endpoints:
