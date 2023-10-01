@@ -6,6 +6,7 @@ import com.example.userservice2.service.UserService;
 import com.example.userservice2.vo.Greeting;
 import com.example.userservice2.vo.RequestUser;
 import com.example.userservice2.vo.ResponseUser;
+import io.micrometer.core.annotation.Timed;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
@@ -13,6 +14,8 @@ import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +28,7 @@ public class UserController {
     private final Greeting greeting;
     private final UserService userService;
 
+    @Timed(value = "users.status", longTask = true)
     @GetMapping("/health_check")
     public String status() {
         return String.format("It's Working in User Service"
@@ -32,6 +36,7 @@ public class UserController {
                 + ", token expiration time = " +env.getProperty("token.expiration_time"));
     }
 
+    @Timed(value = "users.welcome", longTask = true)
     @GetMapping("/welcome")
     public String welcome(){
         return env.getProperty("greeting.message");
