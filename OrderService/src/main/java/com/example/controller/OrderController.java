@@ -59,12 +59,12 @@ public class OrderController {
             results.add(new ModelMapper().map(o, ResponseOrder.class));
         });
         
-        try {
+       /* try {
             Thread.sleep(1000);
             throw new Exception("장애 발생 테스트");
         }catch (InterruptedException ex){
             log.warn(ex.getMessage());
-        }
+        }*/
         
         log.info("After order call");
 
