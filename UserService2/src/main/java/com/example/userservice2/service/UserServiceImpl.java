@@ -90,10 +90,12 @@ public class UserServiceImpl implements UserService {
         /* ErrorDecoder */
         //List<ResponseOrder> ordersList = orderServiceClient.getOrders(userId);
 
+        log.info("Before user call");
         CircuitBreaker circuitBreaker = circuitBreakerFactory.create("circuitbreaker");
 
         List<ResponseOrder> ordersList = circuitBreaker.run(() -> orderServiceClient.getOrders(userId),
                 throwable -> new ArrayList<>());//문제가 생기면 비어있는 값을 반환
+        log.info("After user call");
 
         userDto.setOrders(ordersList);
 

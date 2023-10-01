@@ -33,6 +33,7 @@ public class OrderController {
     @PostMapping("/{userId}/orders")
     public ResponseEntity<ResponseOrder> createOrder(@PathVariable String userId, @RequestBody RequestOrder requestOrder) {
 
+        log.info("Before order call");
         ModelMapper mapper = new ModelMapper();
                     mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
@@ -42,12 +43,14 @@ public class OrderController {
         OrderDto orderResult = orderService.createOrder(orderDto);
 
         ResponseOrder responseOrder = mapper.map(orderResult, ResponseOrder.class);
+        log.info("After order call");
 
         return ResponseEntity.status(HttpStatus.CREATED).body(responseOrder);
     }
     @GetMapping("/{userId}/orders")
     public ResponseEntity<List<ResponseOrder>> getOrdersByUserId(@PathVariable String userId) throws Exception {
 
+        log.info("Before order call");
         Iterable<OrderEntity> orderList = orderService.getOrdersByUserId(userId);
 
         List<ResponseOrder> results = new ArrayList<>();
@@ -55,6 +58,15 @@ public class OrderController {
         orderList.forEach(o -> {
             results.add(new ModelMapper().map(o, ResponseOrder.class));
         });
+        
+        try {
+            Thread.sleep(1000);
+            throw new Exception("장애 발생 테스트");
+        }catch (InterruptedException ex){
+            log.warn(ex.getMessage());
+        }
+        
+        log.info("After order call");
 
         return ResponseEntity.status(HttpStatus.OK).body(results);
     }
