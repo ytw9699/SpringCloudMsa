@@ -1,0 +1,21 @@
+server:
+  port: 8888
+
+spring:
+  application:
+    name: config-service
+  #profiles:
+  #  active: native
+  cloud:
+    config:
+      server:
+        #native:
+          #search-locations: file://${user.home}/Desktop/work/native-file-repo
+          #search-locations: F:\java\GitApp\SpringCloudMsa1\ConfigRepository
+          #native 로 로컬에 위치를 설정시 아래 git uri 는 무시된다
+        git:
+          #uri: file:///F:\java\GitApp\SpringCloudMsa1\ConfigRepository
+          #위 방법은 로컬에서 git을 가지고 하는 방법이고 아래는 remote git 을 이요
+          uri: https://github.com/ytw9699/ConfigRepository
+#         username:
+#         password:
