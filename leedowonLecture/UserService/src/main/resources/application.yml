@@ -1,0 +1,16 @@
+server:
+  port: 9001
+  #port: 0  > 0번 포트
+
+spring:
+  application:
+    name: user-service
+
+eureka:
+  instance:
+    instance-id: ${spring.cloud.client.hostname}:${spring.application.name}:${server.port}:${spring.application.instance_id:${random.value}}
+  client:
+    register-with-eureka: true
+    fetch-registry: true #유레카 서버로부터 인스턴스들의 정보를 주기적으로 가져올것인가의 여부 갱신된 정보를 받을거면 true
+    service-url:
+      defaultZone: http://127.0.0.1:8761/eureka #유레카 서버 url
