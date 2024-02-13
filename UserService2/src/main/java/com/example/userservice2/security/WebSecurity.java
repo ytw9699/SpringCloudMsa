@@ -37,7 +37,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
         //http.authorizeRequests().antMatchers("/users").permitAll();
         http.authorizeRequests().antMatchers("/actuator/**").permitAll();
         http.authorizeRequests().antMatchers("/h2-console/**").permitAll();
-        http.headers().frameOptions().disable();
+        http.headers().frameOptions().disable();//추가하지 않으면 h2 console 접근 안됨
         //.antMatchers("/error/**").permitAll()
 
         http.authorizeRequests()
