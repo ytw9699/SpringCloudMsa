@@ -1,0 +1,12 @@
+server:
+  port: 8761
+
+spring:
+  application:
+    name: discoveryservice
+
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+#자기자신은 클라이언트로 등록하지 않고 서버로만 기동
