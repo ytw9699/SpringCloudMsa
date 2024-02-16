@@ -39,7 +39,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
         //http.authorizeRequests().antMatchers("/users/**").permitAll();
         http.authorizeRequests()
                 .antMatchers("/**")// 모든 요청
-                .hasIpAddress("127.0.0.1")//이런 아이피만 통과
+                .hasIpAddress("127.0.0.1")//이런 아이피만 통과, localhost라고 적으면 안됨
                 .and()
                 .addFilter(getAuthenticationFilter());//인증 필터 추가, 이 필터통과해야 권한부여
 

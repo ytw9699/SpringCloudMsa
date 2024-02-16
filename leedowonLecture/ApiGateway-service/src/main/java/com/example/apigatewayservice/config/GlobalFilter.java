@@ -8,6 +8,7 @@ import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
+import java.net.InetSocketAddress;
 
 @Component
 @Slf4j
@@ -31,6 +32,13 @@ public class GlobalFilter extends AbstractGatewayFilterFactory<GlobalFilter.Conf
             return chain.filter(exchange).then(Mono.fromRunnable(()->{
                 if (config.isPostLogger()) {
                     log.info("Global Filter End: response code -> {}", response.getStatusCode());
+                    /*String clientIP = request.getHeaders().getFirst("X-Forwarded-For");
+                    if (clientIP == null) {
+                        // X-Forwarded-For 헤더가 없는 경우, 원격 주소 사용
+                        clientIP = request.getRemoteAddress().getAddress().getHostAddress();
+                    }
+                    // 클라이언트의 실제 IP 주소를 로깅하거나 다른 처리를 수행할 수 있습니다.
+                    System.out.println("Client IP Address: " + clientIP);*/
                 }
             }));
         });
