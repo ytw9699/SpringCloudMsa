@@ -1,4 +1,4 @@
-package com.example.apigatewayservice.config;
+package com.example.apigatewayservice.filter;
 
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -8,7 +8,6 @@ import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
-import java.net.InetSocketAddress;
 
 @Component
 @Slf4j
