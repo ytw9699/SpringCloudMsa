@@ -48,8 +48,8 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 
     private AuthenticationFilter getAuthenticationFilter() throws Exception {
 
-        AuthenticationFilter authenticationFilter = new AuthenticationFilter();
-                             authenticationFilter.setAuthenticationManager(authenticationManager());
+        AuthenticationFilter authenticationFilter =
+                new AuthenticationFilter(authenticationManager(), userService, env);
         //스프링 시큐리티에서 가져온 매니저 가지고 인증 처리. 즉 스프링 시큐리티 로그인 기능 이용하자
         return authenticationFilter;
     }

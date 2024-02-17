@@ -39,7 +39,7 @@ public class UserServiceImpl implements UserService {
             throw new UsernameNotFoundException(username);
         }
 
-        return new User(
+        return new User(//로그인 성공후 AuthenticaionProvider에게 반환
                 userEntity.getEmail(),
                 userEntity.getEncryptedPwd(),//암호화된 비밀번호를 비교하자
                 true,
@@ -89,5 +89,19 @@ public class UserServiceImpl implements UserService {
     public Iterable<UserEntity> getUserByAll() {
 
         return userRepository.findAll();
+    }
+
+    @Override
+    public UserDto getUserDetailsByEmail(String email) {
+
+        UserEntity userEntity = userRepository.findByEmail(email);
+
+        if (userEntity == null){
+            throw new UsernameNotFoundException(email);
+        }
+
+        UserDto userDto = new ModelMapper().map(userEntity, UserDto.class);
+
+        return userDto;
     }
 }
