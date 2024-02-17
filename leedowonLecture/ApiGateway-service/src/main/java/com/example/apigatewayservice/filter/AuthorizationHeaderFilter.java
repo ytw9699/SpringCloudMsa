@@ -1,5 +1,6 @@
 package com.example.apigatewayservice.filter;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
@@ -12,6 +13,7 @@ import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
+import java.util.Date;
 
 @Component
 @Slf4j//요청시 필요한 경우 토큰 디코딩 확인 작업, 토큰이 있는지 제대로 확인,인증이 된건가, 발급된건가 등등확인 
@@ -55,12 +57,23 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<Auth
         boolean returnBool = true;
         String subject = null;
 
-        try {// 토큰 검증
-             subject = Jwts.parser()//복호화
+        try {//토큰 파싱 및 검증
+
+            Claims claims = Jwts.parser()//복호화
                             .setSigningKey(env.getProperty("token.secret"))
                             .parseClaimsJws(jwt)//복호화 대상
-                       .getBody()
-                       .getSubject();//아이디값 가져와본다
+                       .getBody();
+
+            // 토큰에서 subject(사용자 아이디) 추출
+            subject = claims.getSubject();
+
+            // 만료 시간 확인
+            Date expiration = claims.getExpiration();
+            Date now = new Date();
+            if (expiration == null || expiration.before(now)) {
+                log.info("The token has expired");
+                return false; // 만료되었거나 만료 시간이 지남
+            }
              
         } catch (Exception e) {//파싱하다 에러시
             returnBool = false;
