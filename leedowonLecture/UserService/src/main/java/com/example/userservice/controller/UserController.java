@@ -17,7 +17,7 @@ import java.util.List;
 import com.example.userservice.jpa.UserEntity;
 
 @RestController
-@RequestMapping("/user-service")
+@RequestMapping("/")
 public class UserController {
 
     private Environment env;

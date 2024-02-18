@@ -7,7 +7,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.client.circuitbreaker.CircuitBreaker;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,26 @@ public class UserServiceImpl implements UserService {
     public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+
+        final UserEntity userEntity = userRepository.findByEmail(username);//username = email
+
+        if (userEntity == null){
+            throw new UsernameNotFoundException(username);
+        }
+
+        return new User(//로그인 성공후 AuthenticaionProvider에게 반환
+                userEntity.getEmail(),
+                userEntity.getEncryptedPwd(),//암호화된 비밀번호를 비교하자
+                true,
+                true,
+                true,
+                true,
+                new ArrayList<>()//권한들
+        );
     }
 
     @Override
@@ -68,5 +89,19 @@ public class UserServiceImpl implements UserService {
     public Iterable<UserEntity> getUserByAll() {
 
         return userRepository.findAll();
+    }
+
+    @Override
+    public UserDto getUserDetailsByEmail(String email) {
+
+        UserEntity userEntity = userRepository.findByEmail(email);
+
+        if (userEntity == null){
+            throw new UsernameNotFoundException(email);
+        }
+
+        UserDto userDto = new ModelMapper().map(userEntity, UserDto.class);
+
+        return userDto;
     }
 }
